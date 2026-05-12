@@ -1,10 +1,323 @@
-from flask import Flask
+from flask import Flask, render_template_string
 
 app = Flask(__name__)
 
+HTML = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carnicería La Revancha</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#0f0f0f;
+    color:white;
+}
+
+header{
+    background:linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,.85)),
+    url('https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=1200');
+    background-size:cover;
+    background-position:center;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+}
+
+.hero{
+    max-width:900px;
+}
+
+.hero h1{
+    font-size:4rem;
+    color:#d4af37;
+    text-transform:uppercase;
+    text-shadow:2px 2px 10px rgba(0,0,0,.5);
+}
+
+.hero p{
+    font-size:1.3rem;
+    margin-top:15px;
+    color:#ddd;
+}
+
+.btn{
+    display:inline-block;
+    margin-top:25px;
+    background:#d4af37;
+    color:black;
+    padding:15px 35px;
+    border-radius:40px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:scale(1.08);
+}
+
+section{
+    padding:80px 10%;
+}
+
+.titulo{
+    text-align:center;
+    font-size:2.5rem;
+    color:#d4af37;
+    margin-bottom:40px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:#1a1a1a;
+    border:1px solid rgba(212,175,55,.25);
+    border-radius:20px;
+    overflow:hidden;
+    transition:.3s;
+    box-shadow:0 0 20px rgba(212,175,55,.08);
+}
+
+.card:hover{
+    transform:translateY(-8px);
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:20px;
+}
+
+.card-content h3{
+    color:#d4af37;
+    margin-bottom:10px;
+}
+
+.promos{
+    background:#141414;
+}
+
+.promo-box{
+    background:linear-gradient(135deg,#d4af37,#b8860b);
+    color:black;
+    border-radius:25px;
+    padding:35px;
+    text-align:center;
+    font-weight:bold;
+    font-size:1.2rem;
+}
+
+.info{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.info-box{
+    background:#1a1a1a;
+    border-radius:20px;
+    padding:30px;
+    text-align:center;
+}
+
+.info-box h3{
+    color:#d4af37;
+    margin-bottom:10px;
+}
+
+.testimonios{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.testimonio{
+    background:#1a1a1a;
+    padding:25px;
+    border-radius:20px;
+}
+
+footer{
+    text-align:center;
+    background:black;
+    padding:25px;
+    color:#999;
+}
+
+.whatsapp{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#25D366;
+    color:white;
+    text-decoration:none;
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:2rem;
+    box-shadow:0 0 20px rgba(0,0,0,.4);
+}
+
+@media(max-width:768px){
+    .hero h1{
+        font-size:2.6rem;
+    }
+
+    .hero p{
+        font-size:1rem;
+    }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="hero" style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+
+        <img src="{{ url_for('static', filename='images/logo.jpeg') }}" style="width:300px; height:auto;" alt="Carnicería La Revancha">
+
+        <p>Calidad premium, cortes frescos y el mejor sabor en tu mesa.</p>
+
+        <a class="btn" href="https://wa.me/59800000000">
+            Pedir por WhatsApp
+        </a>
+
+    </div>
+</header>
+
+<section>
+    <h2 class="titulo">Nuestros Cortes Premium</h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800">
+            <div class="card-content">
+                <h3>Carne Vacuna</h3>
+                <p>Asado, vacío, entrecot, pulpa y cortes premium.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800">
+            <div class="card-content">
+                <h3>Pollo Fresco</h3>
+                <p>Pechuga, muslo, alitas y preparados especiales.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800">
+            <div class="card-content">
+                <h3>Cerdo Premium</h3>
+                <p>Bondiola, costillas, pulpas y cortes seleccionados.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="promos">
+    <h2 class="titulo">Promociones Especiales</h2>
+
+    <div class="promo-box">
+        🥩 Combo Parrillero Premium <br><br>
+        Asado + Chorizos + pamplona + Vacío <br><br>
+        ¡Consultá precio por WhatsApp!
+    </div>
+</section>
+
+<section>
+    <h2 class="titulo">Información</h2>
+
+    <div class="info">
+
+        <div class="info-box">
+            <h3>📍 Ubicación</h3>
+            <p>Durazno, Uruguay</p>
+        </div>
+
+        <div class="info-box">
+            <h3>🕒 Horarios</h3>
+            <p>Lunes a Sábado<br>08:00 a 20:30</p>
+        </div>
+
+        <div class="info-box">
+            <h3>📞 Contacto</h3>
+            <p>WhatsApp: +598 00 000 000</p>
+        </div>
+
+    </div>
+</section>
+
+<section>
+    <h2 class="titulo">Clientes Felices</h2>
+
+    <div class="testimonios">
+
+        <div class="testimonio">
+            ⭐⭐⭐⭐⭐<br><br>
+            “La mejor carne de la zona, tremenda calidad.”
+            <br><br><strong>- Martín</strong>
+        </div>
+
+        <div class="testimonio">
+            ⭐⭐⭐⭐⭐<br><br>
+            “Excelente atención y cortes frescos.”
+            <br><br><strong>- Laura</strong>
+        </div>
+
+        <div class="testimonio">
+            ⭐⭐⭐⭐⭐<br><br>
+            “El combo parrillero es increíble.”
+            <br><br><strong>- Diego</strong>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    © 2026 Carnicería La Revancha - Calidad que se nota
+</footer>
+
+<a class="whatsapp" href="https://wa.me/59800000000">
+📱
+</a>
+
+</body>
+</html>
+"""
+
 @app.route("/")
 def home():
-    return "Hola 👋 esta es mi web en Render funcionando"
+    return render_template_string(HTML)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
